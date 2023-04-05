@@ -30,7 +30,7 @@
         :isActive="request()->routeIs('forecasting')"
     >
         <x-slot name="icon">
-            <x-heroicon-o-document-text class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            <x-heroicon-o-document-chart-bar class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
 
