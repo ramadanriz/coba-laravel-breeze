@@ -9,11 +9,11 @@
         <span>by</span>
 
         <a
-            href="https://github.com/Kamona-WD"
+            href="https://github.com/ramadanriz"
             target="_blank"
             class="text-blue-600 hover:underline"
         >
-            Ahmed Kamel
+            Rizky Ramadhan
         </a>
     </p>
 </footer>

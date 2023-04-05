@@ -14,45 +14,24 @@
         </x-slot>
     </x-sidebar.link>
 
-    <x-sidebar.dropdown
-        title="Buttons"
-        :active="Str::startsWith(request()->route()->uri(), 'buttons')"
+    <x-sidebar.link
+        title="Income"
+        href="/income"
+        :isActive="request()->routeIs('income*')"
     >
         <x-slot name="icon">
-            <x-heroicon-o-view-grid class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            <x-heroicon-o-document-text class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
+    </x-sidebar.link>
 
-        <x-sidebar.sublink
-            title="Text button"
-            href="{{ route('buttons.text') }}"
-            :active="request()->routeIs('buttons.text')"
-        />
-        <x-sidebar.sublink
-            title="Icon button"
-            href="{{ route('buttons.icon') }}"
-            :active="request()->routeIs('buttons.icon')"
-        />
-        <x-sidebar.sublink
-            title="Text with icon"
-            href="{{ route('buttons.text-icon') }}"
-            :active="request()->routeIs('buttons.text-icon')"
-        />
-    </x-sidebar.dropdown>
-
-    <div
-        x-transition
-        x-show="isSidebarOpen || isSidebarHovered"
-        class="text-sm text-gray-500"
+    <x-sidebar.link
+        title="Forecasting"
+        href="{{ route('forecasting') }}"
+        :isActive="request()->routeIs('forecasting')"
     >
-        Dummy Links
-    </div>
-
-    @php
-        $links = array_fill(0, 20, '');
-    @endphp
-
-    @foreach ($links as $index => $link)
-        <x-sidebar.link title="Dummy link {{ $index + 1 }}" href="#" />
-    @endforeach
+        <x-slot name="icon">
+            <x-heroicon-o-document-text class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
 
 </x-perfect-scrollbar>

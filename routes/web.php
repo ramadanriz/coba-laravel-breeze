@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminForecastingController;
+use App\Http\Controllers\IncomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 
@@ -28,18 +30,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// useless routes
-// Just to demo sidebar dropdown links active states.
-Route::get('/buttons/text', function () {
-    return view('buttons-showcase.text');
-})->middleware(['auth'])->name('buttons.text');
+Route::resource('/income', IncomeController::class)->middleware('auth');
 
-Route::get('/buttons/icon', function () {
-    return view('buttons-showcase.icon');
-})->middleware(['auth'])->name('buttons.icon');
-
-Route::get('/buttons/text-icon', function () {
-    return view('buttons-showcase.text-icon');
-})->middleware(['auth'])->name('buttons.text-icon');
+Route::middleware('auth')->group(function () {
+    Route::get('/forecasting', [AdminForecastingController::class, 'index'])->name('forecasting');
+    Route::post('/forecasting', [AdminForecastingController::class, 'index']);
+});
 
 require __DIR__ . '/auth.php';
