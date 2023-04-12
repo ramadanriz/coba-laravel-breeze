@@ -43,7 +43,6 @@
           <tbody>
             @foreach ($incomes as $index => $income)
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 text-center">
-              <input type="hidden" class="delete_id" value="{{ $income->id }}">
               <td class="px-6 py-4">{{ $index + $incomes->firstItem() }}</td>
               <td class="px-6 py-4">@lang('income.month.'.$income->month)</td>
               <td class="px-6 py-4">{{ $income->year }}</td>
@@ -53,7 +52,7 @@
                   <form action="/income/{{ $income->id }}" method="POST">
                     @method('delete')
                     @csrf
-                    <button class="btndelete"><x-heroicon-o-trash class="flex-shrink-0 w-6 h-6 hover:text-red-500" aria-hidden="true" /></button>
+                    <button class="btndelete" value="{{ $income->id }}"><x-heroicon-o-trash class="flex-shrink-0 w-6 h-6 hover:text-red-500" aria-hidden="true" /></button>
                   </form>
               </td>
           </tr>

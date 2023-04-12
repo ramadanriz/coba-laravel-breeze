@@ -1,6 +1,5 @@
 import './bootstrap'
 import swal from 'sweetalert'
-import Swal from 'sweetalert2'
 import Alpine from 'alpinejs'
 import collapse from '@alpinejs/collapse'
 import PerfectScrollbar from 'perfect-scrollbar'
@@ -85,7 +84,7 @@ $('document').ready(function() {
 
     $('.btndelete').click(function (e) {
         e.preventDefault();
-        const deleteid = $(this).closest("tr").find('.delete_id').val();
+        const deleteid = $(this).val();
 
         swal({
             title: "Apakah anda yakin?",
