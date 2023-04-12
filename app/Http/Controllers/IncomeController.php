@@ -89,7 +89,7 @@ class IncomeController extends Controller
     public function destroy(Income $income)
     {
         Income::destroy($income->id);
-        return redirect('/income');
+        return response()->json(['status' => 'Data Berhasil di hapus!']);
     }
 
     public function setMonth() {

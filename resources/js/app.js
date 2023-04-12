@@ -1,9 +1,10 @@
 import './bootstrap'
-
+import swal from 'sweetalert'
+import Swal from 'sweetalert2'
 import Alpine from 'alpinejs'
 import collapse from '@alpinejs/collapse'
 import PerfectScrollbar from 'perfect-scrollbar'
-
+import $ from 'jquery'
 window.PerfectScrollbar = PerfectScrollbar
 
 document.addEventListener('alpine:init', () => {
@@ -74,3 +75,46 @@ document.addEventListener('alpine:init', () => {
 Alpine.plugin(collapse)
 
 Alpine.start()
+
+$('document').ready(function() {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $('.btndelete').click(function (e) {
+        e.preventDefault();
+        const deleteid = $(this).closest("tr").find('.delete_id').val();
+
+        swal({
+            title: "Apakah anda yakin?",
+            text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+
+                const data = {
+                    "_token": $('input[name=_token]').val(),
+                    'id': deleteid,
+                };
+                $.ajax({
+                    type: "DELETE",
+                    url: 'income/' + deleteid,
+                    data: data,
+                    success: function (response) {
+                        swal(response.status, {
+                                icon: "success",
+                            })
+                            .then((result) => {
+                                location.reload();
+                            });
+                    }
+                });
+            }
+        });
+    })
+})

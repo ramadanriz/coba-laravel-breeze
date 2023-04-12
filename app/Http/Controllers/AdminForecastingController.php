@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Income;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use ArielMejiaDev\LarapexCharts\LarapexChart;
 
 class AdminForecastingController extends Controller
 {
@@ -26,9 +27,9 @@ class AdminForecastingController extends Controller
     
             foreach ($hasil['MA'] as $value) {
                 array_push($data2,$value);
-            }        
+            }
         }
-    
+
         return view('forecasting.index', [
             "hasil" => isset($_POST['generate']) ? $hasil : '',
             "index" => $index,

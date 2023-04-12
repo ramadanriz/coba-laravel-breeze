@@ -24,6 +24,7 @@
         </x-slot>
     </x-sidebar.link>
 
+    @can('admin')
     <x-sidebar.link
         title="Forecasting"
         href="{{ route('forecasting') }}"
@@ -33,5 +34,16 @@
             <x-heroicon-o-document-chart-bar class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
+
+    <x-sidebar.link
+        title="Users"
+        href="/users"
+        :isActive="request()->routeIs('users*')"
+    >
+        <x-slot name="icon">
+            <x-heroicon-o-users class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
+    @endcan
 
 </x-perfect-scrollbar>

@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,6 +24,10 @@ class AppServiceProvider extends ServiceProvider
     {
         Blade::directive('currency', function ( $expression ) { 
             return "Rp. <?php echo number_format($expression,0,',','.'); ?>"; 
+        });
+
+        Gate::define('admin', function(User $user) {
+            return $user->username === 'admin';
         });
     }
 }

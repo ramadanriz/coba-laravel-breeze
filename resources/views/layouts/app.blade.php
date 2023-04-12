@@ -21,6 +21,7 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="/js/chart.js"></script>
 </head>
 
 <body class="font-sans antialiased">

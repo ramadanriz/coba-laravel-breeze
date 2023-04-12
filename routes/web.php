@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminForecastingController;
+use App\Http\Controllers\AdminUsersController;
 use App\Http\Controllers\IncomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
@@ -32,9 +33,10 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('/income', IncomeController::class)->middleware('auth');
 
-Route::middleware('auth')->group(function () {
+Route::middleware('admin')->group(function () {
     Route::get('/forecasting', [AdminForecastingController::class, 'index'])->name('forecasting');
-    Route::post('/forecasting', [AdminForecastingController::class, 'index']);
+    Route::post('/forecasting', [AdminForecastingController::class, 'index'])->name('forecasting');
+    Route::resource('/users', AdminUsersController::class);
 });
 
 require __DIR__ . '/auth.php';

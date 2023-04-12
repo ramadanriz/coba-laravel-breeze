@@ -7,151 +7,165 @@
         </div>
     </x-slot>
 
-    {{-- <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">Button</button> --}}
+    <x-button
+      x-on:click.prevent="$dispatch('open-modal', 'input-periode')"
+      class="fixed right-0 top-1/2 rounded-none rounded-s-sm"
+    >
+      <x-heroicon-o-cog-6-tooth class="w-5" />
+    </x-button>
 
-    {{-- <div x-data="{ 'showModal': false }" @keydown.escape="showModal = false">
-        <!-- Trigger for Modal -->
-        <button type="button" @click="showModal = true">Open Modal</button>
-        
-        <!-- Modal -->
-        <div
-            class="fixed inset-0 z-30 flex items-center justify-center overflow-auto bg-black bg-opacity-50"
-            x-show="showModal"
-        >
-            <!-- Modal inner -->
-            <div 
-                class="bg-white rounded-lg shadow relative dark:bg-gray-700"
-                @click.away="showModal = false"
-                x-transition:enter="motion-safe:ease-out duration-300" 
-                x-transition:enter-start="opacity-0 scale-90" 
-                x-transition:enter-end="opacity-100 scale-100"
+    <x-modal
+        name="input-periode"
+        focusable
+    >
+      <form action="/forecasting" method="POST" class="p-6">
+          @csrf
+          <h2 class="text-lg font-medium">
+            {{ __('Masukkan jumlah periode') }}
+          </h2>
+
+          <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+            {{ __('Jumlah periode dalam moving average adalah jumlah data yang digunakan untuk menghitung rata-rata bergerak pada suatu periode waktu tertentu.') }}
+          </p>
+
+          <div class="mt-6 space-y-6">
+            <x-form.label
+              for="periode"
+              value="Jumlah periode"
+              class="sr-only"
+            />
+
+            <x-form.input
+              id="periode"
+              name="periode"
+              type="number"
+              class="block w-3/4"
+              min="1"
+              max="{{ $index-1 }}"
+              required
+            />
+          </div>
+
+          <div class="mt-6 flex justify-end">
+            <x-button
+              name="generate"
+              type="submit"
             >
-                <!-- Title / Close-->
-                <div class="flex items-center justify-between">
-                    <h5 class="mr-3 text-black max-w-none">Title</h5>
-    
-                    <button type="button" class="z-50 cursor-pointer" @click="showModal = false">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-    
-                <!-- content -->
-                <div>Content goes here</div>
-            </div>
+                {{ __('Submit') }}
+            </x-button>
         </div>
-    </div> --}}
+      </form>
+    </x-modal>
 
-    <div x-data="{ modelOpen: false }">
-    <button @click="modelOpen =!modelOpen" class="flex items-center justify-center px-3 py-2 space-x-2 text-sm tracking-wide text-white capitalize transition-colors duration-200 transform bg-indigo-500 rounded-md dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:bg-indigo-700 hover:bg-indigo-600 focus:outline-none focus:bg-indigo-500 focus:ring focus:ring-indigo-300 focus:ring-opacity-50">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-        </svg>
+    @if (isset($_POST['generate']))
+    <div class="container grid gap-7">
 
-        <span>Invite Member</span>
-    </button>
-
-    <div x-show="modelOpen" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen px-4 text-center md:items-center sm:block sm:p-0">
-            <div x-cloak @click="modelOpen = false" x-show="modelOpen" 
-                x-transition:enter="transition ease-out duration-300 transform"
-                x-transition:enter-start="opacity-0" 
-                x-transition:enter-end="opacity-100"
-                x-transition:leave="transition ease-in duration-200 transform"
-                x-transition:leave-start="opacity-100" 
-                x-transition:leave-end="opacity-0"
-                class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-40" aria-hidden="true"
-            ></div>
-
-            <div x-cloak x-show="modelOpen" 
-                x-transition:enter="transition ease-out duration-300 transform"
-                x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
-                x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-                x-transition:leave="transition ease-in duration-200 transform"
-                x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" 
-                x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                class="inline-block w-full max-w-xl p-8 my-20 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl"
-            >
-                <div class="flex items-center justify-between space-x-4">
-                    <h1 class="text-xl font-medium text-gray-800 ">Invite team memebr</h1>
-
-                    <button @click="modelOpen = false" class="text-gray-600 focus:outline-none hover:text-gray-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </button>
-                </div>
-
-                <p class="mt-2 text-sm text-gray-500 ">
-                    Add your teammate to your team and start work to get things done
-                </p>
-
-                <form class="mt-5">
-                    <div>
-                        <label for="user name" class="block text-sm text-gray-700 capitalize dark:text-gray-200">Teammate name</label>
-                        <input placeholder="Arthur Melo" type="text" class="block w-full px-3 py-2 mt-2 text-gray-600 placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-indigo-400 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-40">
-                    </div>
-
-                    <div class="mt-4">
-                        <label for="email" class="block text-sm text-gray-700 capitalize dark:text-gray-200">Teammate email</label>
-                        <input placeholder="arthurmelo@example.app" type="email" class="block w-full px-3 py-2 mt-2 text-gray-600 placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-indigo-400 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-40">
-                    </div>
-                    
-                    <div class="mt-4">
-                        <h1 class="text-xs font-medium text-gray-400 uppercase">Permissions</h1>
-
-                        <div class="mt-4 space-y-5">
-                            <div class="flex items-center space-x-3 cursor-pointer" x-data="{ show: true }" @click="show =!show">
-                                <div class="relative w-10 h-5 transition duration-200 ease-linear rounded-full"
-                                    :class="[show ? 'bg-indigo-500' : 'bg-gray-300']">
-                                    <label for="show"
-                                        @click="show =!show"
-                                        class="absolute left-0 w-5 h-5 mb-2 transition duration-100 ease-linear transform bg-white border-2 rounded-full cursor-pointer"
-                                        :class="[show ? 'translate-x-full border-indigo-500' : 'translate-x-0 border-gray-300']"></label>
-                                    <input type="checkbox" name="show" class="hidden w-full h-full rounded-full appearance-none active:outline-none focus:outline-none"/>
-                                </div>
-
-                                <p class="text-gray-500">Can make task</p>
-                            </div>
-
-                            <div class="flex items-center space-x-3 cursor-pointer" x-data="{ show: false }" @click="show =!show">
-                                <div class="relative w-10 h-5 transition duration-200 ease-linear rounded-full"
-                                    :class="[show ? 'bg-indigo-500' : 'bg-gray-300']">
-                                    <label for="show"
-                                        @click="show =!show"
-                                        class="absolute left-0 w-5 h-5 mb-2 transition duration-100 ease-linear transform bg-white border-2 rounded-full cursor-pointer"
-                                        :class="[show ? 'translate-x-full border-indigo-500' : 'translate-x-0 border-gray-300']"></label>
-                                    <input type="checkbox" name="show" class="hidden w-full h-full rounded-full appearance-none active:outline-none focus:outline-none"/>
-                                </div>
-
-                                <p class="text-gray-500">Can delete task</p>
-                            </div>
-
-                            <div class="flex items-center space-x-3 cursor-pointer" x-data="{ show: true }" @click="show =!show">
-                                <div class="relative w-10 h-5 transition duration-200 ease-linear rounded-full"
-                                    :class="[show ? 'bg-indigo-500' : 'bg-gray-300']">
-                                    <label for="show"
-                                        @click="show =!show"
-                                        class="absolute left-0 w-5 h-5 mb-2 transition duration-100 ease-linear transform bg-white border-2 rounded-full cursor-pointer"
-                                        :class="[show ? 'translate-x-full border-indigo-500' : 'translate-x-0 border-gray-300']"></label>
-                                    <input type="checkbox" name="show" class="hidden w-full h-full rounded-full appearance-none active:outline-none focus:outline-none"/>
-                                </div>
-
-                                <p class="text-gray-500">Can edit task</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex justify-end mt-6">
-                        <button type="button" class="px-3 py-2 text-sm tracking-wide text-white capitalize transition-colors duration-200 transform bg-indigo-500 rounded-md dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:bg-indigo-700 hover:bg-indigo-600 focus:outline-none focus:bg-indigo-500 focus:ring focus:ring-indigo-300 focus:ring-opacity-50">
-                            Invite Member
-                        </button>
-                    </div>
-                </form>
-            </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 w-full">
+        <div class="flex items-center p-4 w-full bg-white dark:bg-dark-eval-1 rounded-lg overflow-hidden shadow hover:shadow-md">
+          <div>
+            <p class="font-bold text-gray-800 dark:text-white">@currency(end($data2))</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Prediksi bulan {{ $nextPeriod }}</p>
+          </div>
         </div>
+        <div class="flex items-center p-4 w-full bg-white dark:bg-dark-eval-1 rounded-lg overflow-hidden shadow hover:shadow-md">
+          <div>
+            <p class="font-bold text-gray-800 dark:text-white">@currency($hasil['MFE'])</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400 uppercase">mfe</p>
+          </div>
+        </div>
+        <div class="flex items-center p-4 w-full bg-white dark:bg-dark-eval-1 rounded-lg overflow-hidden shadow hover:shadow-md">
+          <div>
+            <p class="font-bold text-gray-800 dark:text-white">@currency($hasil['MAD'])</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400 uppercase">mad</p>
+          </div>
+        </div>
+        <div class="flex items-center p-4 w-full bg-white dark:bg-dark-eval-1 rounded-lg overflow-hidden shadow hover:shadow-md">
+          <div>
+            <p class="font-bold text-gray-800 dark:text-white">@currency($hasil['MSE'])</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400 uppercase">mse</p>
+          </div>
+        </div>
+        <div class="flex items-center p-4 w-full bg-white dark:bg-dark-eval-1 rounded-lg overflow-hidden shadow hover:shadow-md">
+          <div>
+            <p class="font-bold text-gray-800 dark:text-white">{{ $hasil['MAPE'] }}%</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400 uppercase">mape</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="overflow-x-auto shadow-md sm:rounded-lg p-5 bg-white dark:bg-dark-eval-1">
+          <h2 class="text-xl font-semibold leading-tight">
+              {{ __('Grafik Perbandingan') }}
+          </h2>
+          <canvas id="myChart"></canvas>
+      </div>
+
+      <div class="grid gap-2">
+        <h2 class="text-xl font-semibold leading-tight capitalize">
+          {{ __('tabel hasil forecasting') }}
+        </h2>
+        <div class="overflow-x-auto shadow-md sm:rounded-lg">
+          <table class="w-full text-sm text-left">
+              <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-white">
+                  <tr>
+                      <th scope="col" class="px-6 py-3">No</th>
+                      <th scope="col" class="px-6 py-3">Periode</th>
+                      <th scope="col" class="px-6 py-3">Data Aktual</th>
+                      <th scope="col" class="px-6 py-3">Data Forecasting</th>
+                      <th scope="col" class="px-6 py-3">Error</th>
+                      <th scope="col" class="px-6 py-3">|Error|</th>
+                      <th scope="col" class="px-6 py-3">Error^2</th>
+                      <th scope="col" class="px-6 py-3">%Error</th>
+                  </tr>
+              </thead>
+              <tbody>
+              @for ($i=0; $i <  count($hasil['data']) ; $i++)
+                <tr class="bg-white border-b dark:bg-dark-eval-1 dark:border-gray-700">
+                  <td class="px-6 py-4">{{ $i+1 }}</td>
+                  <td class="px-6 py-4">{{ $hasil['data'][$i][0] }}</td>
+                  <td class="px-6 py-4">@currency($hasil['data'][$i][1])</td>
+                  <td class="px-6 py-4">@currency($hasil['MA'][$i])</td>
+                  <td class="px-6 py-4">@currency($hasil['error'][$i])</td>
+                  <td class="px-6 py-4">@currency($hasil['abs'][$i])</td>
+                  <td class="px-6 py-4">@currency($hasil['pow'][$i])</td>
+                  <td class="px-6 py-4">{{ $hasil['percent'][$i] }}</td> 
+              </tr>
+              @endfor
+              </tbody>
+          </table>
+      </div>
+      </div>
     </div>
-</div>
+    @endif
+
+    <script>
+        const ctx = document.getElementById('myChart');
+      
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: <?= json_encode($label); ?>,
+            datasets: [
+                {
+                    label: 'Pola Data Pendapatan',
+                    data: <?= json_encode($data1); ?>,
+                    borderWidth: 1
+                },
+                {
+                    label: 'Pola Data Ramalan',
+                    data: <?= json_encode($data2); ?>,
+                    borderWidth: 1
+                }
+            ]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+    </script>
     
 </x-app-layout>
