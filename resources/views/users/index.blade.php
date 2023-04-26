@@ -4,7 +4,6 @@
             <h2 class="text-xl font-semibold leading-tight">
                 {{ __('Data Users') }}
             </h2>
-            <a href="/income/create" class="py-2 px-3 rounded-lg text-white bg-purple-500 shadow-lg hover:bg-purple-600">Add New User</a>
         </div>
     </x-slot>
 

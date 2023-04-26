@@ -30,35 +30,26 @@
                             name="input_type"
                             :value="old('input_type')"
                             placeholder="{{ __('Email/Username') }}"
-                            required
                             autofocus
                         />
                     </x-form.input-with-icon-wrapper>
                 </div>
 
                 <!-- Password -->
-                <div class="space-y-2">
-                    <x-form.label
-                        for="password"
-                        :value="__('Password')"
-                    />
+                
+                <div class="space-y-2" x-data="{ show: true }">
+                    <label for="password" class="block font-medium text-sm text-gray-700 dark:text-gray-300">Password</label>
 
-                    <x-form.input-with-icon-wrapper>
-                        <x-slot name="icon">
+                    <div class="relative text-gray-500 focus-within:text-gray-900 dark:focus-within:text-gray-400">
+                        <div aria-hidden="true" class="absolute inset-y-0 flex items-center px-4 pointer-events-none">
                             <x-heroicon-o-lock-closed aria-hidden="true" class="w-5 h-5" />
-                        </x-slot>
-
-                        <x-form.input
-                            withicon
-                            id="password"
-                            class="block w-full"
-                            type="password"
-                            name="password"
-                            required
-                            autocomplete="current-password"
-                            placeholder="{{ __('Password') }}"
-                        />
-                    </x-form.input-with-icon-wrapper>
+                        </div>
+                        <input :type="show ? 'password' : 'text'" class="py-2 border-gray-400 rounded-md focus:border-gray-400 focus:ring focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-white dark:border-gray-600 dark:bg-dark-eval-1 dark:text-gray-300 dark:focus:ring-offset-dark-eval-1 pl-11 pr-16 block w-full" id="password" name="password" autocomplete="current-password" placeholder="{{ __('Password') }}" />
+                        <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 cursor-pointer" @click="show= !show">
+                            <x-heroicon-o-eye x-show="show" class="w-5 h-5" />
+                            <x-heroicon-o-eye-slash x-show="!show" class="w-5 h-5" />
+                        </button>
+                    </div>                    
                 </div>
 
                 <!-- Remember Me -->
