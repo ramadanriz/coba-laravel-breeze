@@ -40,8 +40,14 @@
                     </x-form.input-with-icon-wrapper>
                 </div>
 
-                <div>
-                    <x-button class="justify-center w-full">
+                <div class="flex justify-end gap-2">
+                    <x-button
+                        href="{{ route('login') }}"
+                        variant="secondary"
+                    >
+                        {{ __('Cancel') }}
+                    </x-button>
+                    <x-button>
                         {{ __('Email Password Reset Link') }}
                     </x-button>
                 </div>

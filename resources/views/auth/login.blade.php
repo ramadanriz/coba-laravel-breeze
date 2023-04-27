@@ -46,8 +46,8 @@
                         </div>
                         <input :type="show ? 'password' : 'text'" class="py-2 border-gray-400 rounded-md focus:border-gray-400 focus:ring focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-white dark:border-gray-600 dark:bg-dark-eval-1 dark:text-gray-300 dark:focus:ring-offset-dark-eval-1 pl-11 pr-16 block w-full" id="password" name="password" autocomplete="current-password" placeholder="{{ __('Password') }}" />
                         <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 cursor-pointer" @click="show= !show">
-                            <x-heroicon-o-eye x-show="show" class="w-5 h-5" />
-                            <x-heroicon-o-eye-slash x-show="!show" class="w-5 h-5" />
+                            <x-heroicon-o-eye x-show="!show" class="w-5 h-5" />
+                            <x-heroicon-o-eye-slash x-show="show" class="w-5 h-5" />
                         </button>
                     </div>                    
                 </div>
