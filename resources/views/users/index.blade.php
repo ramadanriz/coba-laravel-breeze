@@ -28,10 +28,10 @@
               <td class="px-6 py-4">{{ $user->username }}</td>
               <td class="px-6 py-4">{{ $user->email }}</td>
               <td class="px-6 py-4">
-                  <form action="/users/{{ $user->id }}" method="POST" class="d-inline">
+                  <form action="/users/{{ $user->id }}" method="POST">
                     @method('delete')
                     @csrf
-                    <button onclick="return confirm('Yakin ingin dihapus?')"><x-heroicon-o-trash class="flex-shrink-0 w-6 h-6 hover:text-red-500" aria-hidden="true" /></button>
+                    <button class="btndeleteuser" value="{{ $user->id }}"><x-heroicon-o-trash class="flex-shrink-0 w-6 h-6 hover:text-red-500" aria-hidden="true" /></button>
                   </form>
               </td>
           </tr>

@@ -52,7 +52,7 @@
                   <form action="/income/{{ $income->id }}" method="POST">
                     @method('delete')
                     @csrf
-                    <button class="btndelete" value="{{ $income->id }}"><x-heroicon-o-trash class="flex-shrink-0 w-6 h-6 hover:text-red-500" aria-hidden="true" /></button>
+                    <button class="btndeleteincome" value="{{ $income->id }}"><x-heroicon-o-trash class="flex-shrink-0 w-6 h-6 hover:text-red-500" aria-hidden="true" /></button>
                   </form>
               </td>
           </tr>

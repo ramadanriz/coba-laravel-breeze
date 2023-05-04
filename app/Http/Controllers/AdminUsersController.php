@@ -13,7 +13,7 @@ class AdminUsersController extends Controller
     public function index()
     {
         return view('users.index', [
-            'users' => User::all()
+            'users' => User::where('is_admin', false)->get()
         ]);
     }
 
@@ -63,6 +63,7 @@ class AdminUsersController extends Controller
     public function destroy(User $user)
     {
         User::destroy($user->id);
-        return redirect('/users');
+        // return redirect('/users');
+        return response()->json(['status' => 'Data Berhasil di hapus!']);
     }
 }
