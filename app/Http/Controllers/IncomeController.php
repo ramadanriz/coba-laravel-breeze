@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Income;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class IncomeController extends Controller
 {
@@ -13,8 +13,35 @@ class IncomeController extends Controller
      */
     public function index()
     {
+        $incomes = $this->monthlyIncome();    
         return view('income.index', [
-            'incomes' => Income::latest()->filter(request(['search']))->paginate(5)
+            'incomes' => $incomes
+        ]);
+    }
+
+    public function monthlyIncome() {
+        $data = Income::select([
+            DB::raw('sum(income) as total'),
+            DB::raw('EXTRACT(MONTH from date) as month'),
+            DB::raw('EXTRACT(YEAR from date) as year')
+        ])
+        ->groupBy('month', 'year')
+        ->get();
+
+        return $data;
+    }
+
+    public function dailyIncome($bulan, $tahun) {
+        $tanggal = \Carbon\Carbon::createFromFormat('m-Y', $bulan.'-'.$tahun);
+        $pendapatanHarian = Income::whereYear('date', $tahun)
+                        ->whereMonth('date', $bulan)
+                        ->orderBy('date')
+                        ->get()
+                        ->toArray();
+
+        return view('income.detail', [
+            'dailyIncomes' => $pendapatanHarian,
+            'tanggal' => $tanggal
         ]);
     }
 
@@ -23,11 +50,7 @@ class IncomeController extends Controller
      */
     public function create()
     {
-        $months = $this->setMonth();
-
-        return view('income.create', [
-            "months" => $months
-        ]);
+        return view('income.create');
     }
 
     /**
@@ -36,9 +59,8 @@ class IncomeController extends Controller
     public function store(Request $request)
     {
         $validateData = $request->validate([
-            'month' => 'required|max:255',
-            'year' => 'required|integer|digits:4|max:'.(date('Y')),
-            'income' => 'required'
+            'date' => ['required','max:255','unique:'.Income::class],
+            'income' => ['required']
         ]);
 
         $validateData['user_id'] = auth()->user()->id;
@@ -50,9 +72,22 @@ class IncomeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Income $income)
+    public function show($id)
     {
-        //
+        $date = substr($id, 0, -4);
+        $year = substr($id, -4);
+
+        $tanggal = \Carbon\Carbon::createFromFormat('m-Y', $date.'-'.$year);
+        $pendapatanHarian = Income::whereYear('date', $year)
+                        ->whereMonth('date', $date)
+                        ->orderBy('date')
+                        ->get()
+                        ->toArray();
+
+        return view('income.show', [
+            'dailyIncomes' => $pendapatanHarian,
+            'tanggal' => $tanggal
+        ]);
     }
 
     /**
@@ -60,10 +95,8 @@ class IncomeController extends Controller
      */
     public function edit(Income $income)
     {
-        $months = $this->setMonth();
         return view('income.edit', [
-            'income' => $income,
-            "months" => $months
+            'income' => $income
         ]);
     }
 
@@ -73,8 +106,7 @@ class IncomeController extends Controller
     public function update(Request $request, Income $income)
     {
         $validateData = $request->validate([
-            'month' => 'required|max:255',
-            'year' => 'required|integer|digits:4|max:'.(date('Y')),
+            'date' => 'required|max:255',
             'income' => 'required'
         ]);
 
@@ -89,18 +121,6 @@ class IncomeController extends Controller
     public function destroy(Income $income)
     {
         Income::destroy($income->id);
-        return response()->json(['status' => 'Data Berhasil di hapus!']);
-    }
-
-    public function setMonth() {
-        $months = [];
-
-        for ($i = 1; $i <= 12; $i++) {
-            $month = Carbon::createFromDate(null, $i, null, 0);
-            $monthName = $month->getTranslatedMonthName();
-            array_push($months, $monthName);
-        }
-
-        return $months;
+        return redirect('/income');
     }
 }

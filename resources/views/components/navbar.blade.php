@@ -107,7 +107,7 @@
         'translate-y-0': scrollingUp,
     }"
 >
-    <span class="text-white">Forecasting</span>
+    <span class="dark:text-white text-gray-500">Forecasting</span>
 
     <x-button
         type="button"

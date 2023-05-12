@@ -82,73 +82,74 @@ $('document').ready(function() {
         }
     });
 
-    $('.btndeleteincome').click(function (e) {
-        e.preventDefault();
-        const deleteid = $(this).val();
+    // $('.btndeleteincome').click(function (e) {
+    //     e.preventDefault();
+    //     const deleteid = $(this).val();
+    //     console.log(deleteid)
 
-        swal({
-            title: "Apakah anda yakin?",
-            text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-        .then((willDelete) => {
-            if (willDelete) {
+    //     swal({
+    //         title: "Apakah anda yakin?",
+    //         text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
+    //         icon: "warning",
+    //         buttons: true,
+    //         dangerMode: true,
+    //     })
+    //     .then((willDelete) => {
+    //         if (willDelete) {
 
-                const data = {
-                    "_token": $('input[name=_token]').val(),
-                    'id': deleteid,
-                };
-                $.ajax({
-                    type: "DELETE",
-                    url: 'income/' + deleteid,
-                    data: data,
-                    success: function (response) {
-                        swal(response.status, {
-                                icon: "success",
-                            })
-                            .then((result) => {
-                                location.reload();
-                            });
-                    }
-                });
-            }
-        });
-    })
+    //             const data = {
+    //                 "_token": $('input[name=_token]').val(),
+    //                 'id': deleteid,
+    //             };
+    //             $.ajax({
+    //                 type: "DELETE",
+    //                 url: 'income/' + deleteid,
+    //                 data: data,
+    //                 success: function (response) {
+    //                     swal(response.status, {
+    //                             icon: "success",
+    //                         })
+    //                         .then((result) => {
+    //                             location.reload();
+    //                         });
+    //                 }
+    //             });
+    //         }
+    //     });
+    // })
 
-    $('.btndeleteuser').click(function (e) {
-        e.preventDefault();
-        const deleteid = $(this).val();
+    // $('.btndeleteuser').click(function (e) {
+    //     e.preventDefault();
+    //     const deleteid = $(this).val();
 
-        swal({
-            title: "Apakah anda yakin?",
-            text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-        .then((willDelete) => {
-            if (willDelete) {
+    //     swal({
+    //         title: "Apakah anda yakin?",
+    //         text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
+    //         icon: "warning",
+    //         buttons: true,
+    //         dangerMode: true,
+    //     })
+    //     .then((willDelete) => {
+    //         if (willDelete) {
 
-                const data = {
-                    "_token": $('input[name=_token]').val(),
-                    'id': deleteid,
-                };
-                $.ajax({
-                    type: "DELETE",
-                    url: 'users/' + deleteid,
-                    data: data,
-                    success: function (response) {
-                        swal(response.status, {
-                                icon: "success",
-                            })
-                            .then((result) => {
-                                location.reload();
-                            });
-                    }
-                });
-            }
-        });
-    })
+    //             const data = {
+    //                 "_token": $('input[name=_token]').val(),
+    //                 'id': deleteid,
+    //             };
+    //             $.ajax({
+    //                 type: "DELETE",
+    //                 url: 'users/' + deleteid,
+    //                 data: data,
+    //                 success: function (response) {
+    //                     swal(response.status, {
+    //                             icon: "success",
+    //                         })
+    //                         .then((result) => {
+    //                             location.reload();
+    //                         });
+    //                 }
+    //             });
+    //         }
+    //     });
+    // })
 })

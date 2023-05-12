@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Income;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use ArielMejiaDev\LarapexCharts\LarapexChart;
+use Illuminate\Support\Facades\DB;
 
 class AdminForecastingController extends Controller
 {
@@ -41,15 +41,34 @@ class AdminForecastingController extends Controller
       }
     
       public function getData() {
-        $data = Income::all();
-        $output = [];
-        foreach ($data as $row) {
-            $output[] = [
-                trans('income.month.'.$row->month).' ('.$row->year.')',
-                $row->income
-            ];
-        }
+        // $data = Income::all();
+        // $output = [];
+        // foreach ($data as $row) {
+        //     $output[] = [
+        //         trans('income.month.'.$row->month).' ('.$row->year.')',
+        //         $row->income
+        //     ];
+        // }
     
+        // return $output;
+
+        $data = Income::select([
+          DB::raw('sum(income) as total'),
+          DB::raw('EXTRACT(MONTH from date) as month'),
+          DB::raw('EXTRACT(YEAR from date) as year')
+        ])
+          ->groupBy('month', 'year')
+          ->get();
+
+        $output = [];
+
+        foreach($data as $income) {
+          $output[] = [
+            \Carbon\Carbon::createFromDate(null, $income->month)->locale('id')->monthName . ' ('.$income->year.')',
+            $income->total
+          ];
+        }
+
         return $output;
       }
     
@@ -259,17 +278,23 @@ class AdminForecastingController extends Controller
         // dd($tahun);
     
         // return $bulan.' ('.$tahun.')';
-        \Carbon\Carbon::setLocale('id');
-        $month = Income::latest()->first()->month;
-        $year = Income::latest()->first()->year;
-        $monthNumber = Carbon::parse($month)->format('m');
-        $date = Carbon::createFromDate($year, $monthNumber, null, 0);
+        // \Carbon\Carbon::setLocale('id');
+        // $month = Income::latest()->first()->month;
+        // $year = Income::latest()->first()->year;
+        // $monthNumber = Carbon::parse($month)->format('m');
+        // $date = Carbon::createFromDate($year, $monthNumber, null, 0);
     
         // setlocale(LC_TIME, 'id_ID');
       
-        $nextMonth = $date->addMonth()->isoFormat('MMMM (Y)');
+        // $nextMonth = $date->addMonth()->isoFormat('MMMM (Y)');
         
         
-        return $nextMonth;
+        // return $nextMonth;
+        \Carbon\Carbon::setLocale('id');
+        $bulan = Income::orderBy('date', 'DESC')->first()->date;
+        $dateParse = Carbon::parse($bulan);
+        $bulanDepan = $dateParse->addMonth()->isoFormat('MMMM (Y)');
+
+        return $bulanDepan;
       }
 }
