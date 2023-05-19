@@ -13,7 +13,7 @@ class IncomeController extends Controller
      */
     public function index()
     {
-        $incomes = $this->monthlyIncome();    
+        $incomes = $this->monthlyIncome();
         return view('income.index', [
             'incomes' => $incomes
         ]);
@@ -26,7 +26,10 @@ class IncomeController extends Controller
             DB::raw('EXTRACT(YEAR from date) as year')
         ])
         ->groupBy('month', 'year')
-        ->get();
+        ->orderBy('date')
+        ->filter(request(['search']))
+        ->paginate(5)
+        ->withQueryString();
 
         return $data;
     }

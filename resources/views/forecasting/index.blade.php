@@ -2,7 +2,9 @@
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 class="text-xl font-semibold leading-tight">
-                {{ __('Forecasting') }}
+              @if (isset($_POST['generate']))
+                {{ __('Peramalan') }} Menggunakan {{ $_POST['periode'] }} Periode
+              @endif
             </h2>
         </div>
     </x-slot>
@@ -42,6 +44,7 @@
               class="block w-3/4"
               min="1"
               max="{{ $index-1 }}"
+              value="{{ request('periode') }}"
               required
             />
           </div>

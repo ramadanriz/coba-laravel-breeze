@@ -56,7 +56,6 @@
                                 class="block w-full"
                                 :value="old('income')"
                                 required
-                                autofocus
                                 autocomplete="income"
                             />
                 

@@ -13,7 +13,7 @@ class Income extends Model
 
     public function scopeFilter($query, array $filters) {
         $query->when($filters['search'] ?? false, function($query, $search) {
-            return $query->where('month', 'like', '%' . $search . '%')->orWhere('year', 'like', '%' . $search . '%')->orWhere('income', 'like', '%' . $search . '%');
+            return $query->where('date', 'like', '%' . $search . '%')->orWhere('income', 'like', '%' . $search . '%');
         });
     }
 

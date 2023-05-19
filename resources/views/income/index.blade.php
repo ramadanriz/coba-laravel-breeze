@@ -5,7 +5,7 @@
             <h2 class="text-xl font-semibold leading-tight">
                 {{ __('Data Pendapatan Bulanan') }}
             </h2>
-            <form role="search">
+            <form action="/income">
               <x-form.input-with-icon-wrapper>
                 <x-slot name="icon">
                   <x-heroicon-o-magnifying-glass aria-hidden="true" class="w-5 h-5" />
@@ -40,12 +40,12 @@
               </tr>
           </thead>
           <tbody>
-            @foreach ($incomes as $income)
+            @foreach ($incomes as $index => $income)
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 text-center">
-              <td class="px-6 py-4">{{ $loop->iteration }}</td>
+              <td class="px-6 py-4">{{ $incomes->firstItem() + $index }}</td>
               <td class="px-6 py-4">@lang('income.month.'.\Carbon\Carbon::createFromDate(null, $income->month, null)->format('F')) ({{ $income->year }})</td>
               <td class="px-6 py-4">@currency($income->total)</td>
-              <td><a href="/income/{{ $income->month }}{{ $income->year }}" class="hover:underline hover:text-white transition-all">Detail</a></td>
+              <td><a href="/income/{{ $income->month }}{{ $income->year }}" class="hover:underline hover:dark:text-white transition-all">Detail</a></td>
           </tr>
           @endforeach              
           </tbody>
@@ -54,5 +54,5 @@
     @else
     <p class="text-center text-lg">Tidak ada Data</p>
     @endif
-    {{-- {{ $incomes->links() }}       --}}
+    {{ $incomes->links() }}      
 </x-app-layout>

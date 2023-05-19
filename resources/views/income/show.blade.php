@@ -5,24 +5,6 @@
             <h2 class="text-xl font-semibold leading-tight">
                 {{ __('Detail Data Pendapatan Bulan') }} {{ $tanggal->format('F Y') }}
             </h2>
-            <form role="search">
-              <x-form.input-with-icon-wrapper>
-                <x-slot name="icon">
-                  <x-heroicon-o-magnifying-glass aria-hidden="true" class="w-5 h-5" />
-                </x-slot>
-
-                <x-form.input
-                    withicon
-                    id="search"
-                    class="block w-full"
-                    type="text"
-                    name="search"
-                    :value="request('search')"
-                    placeholder="{{ __('Search') }}"
-                    autofocus
-                />
-              </x-form.input-with-icon-wrapper>
-            </form>
           </div>
         </div>
     </x-slot>
