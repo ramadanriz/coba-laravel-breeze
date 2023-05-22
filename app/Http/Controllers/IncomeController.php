@@ -26,7 +26,8 @@ class IncomeController extends Controller
             DB::raw('EXTRACT(YEAR from date) as year')
         ])
         ->groupBy('month', 'year')
-        ->orderBy('date')
+        ->orderByDesc('year')
+        ->orderByDesc('month')
         ->filter(request(['search']))
         ->paginate(5)
         ->withQueryString();
@@ -80,12 +81,11 @@ class IncomeController extends Controller
         $date = substr($id, 0, -4);
         $year = substr($id, -4);
 
-        $tanggal = \Carbon\Carbon::createFromFormat('m-Y', $date.'-'.$year);
+        $tanggal = \Carbon\Carbon::createFromFormat('m-Y', $date.'-'.$year)->locale('id')->isoFormat('MMMM YYYY');
         $pendapatanHarian = Income::whereYear('date', $year)
                         ->whereMonth('date', $date)
                         ->orderBy('date')
-                        ->get()
-                        ->toArray();
+                        ->paginate(7);
 
         return view('income.show', [
             'dailyIncomes' => $pendapatanHarian,

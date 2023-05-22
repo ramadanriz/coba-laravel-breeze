@@ -43,7 +43,7 @@
             @foreach ($incomes as $index => $income)
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 text-center">
               <td class="px-6 py-4">{{ $incomes->firstItem() + $index }}</td>
-              <td class="px-6 py-4">@lang('income.month.'.\Carbon\Carbon::createFromDate(null, $income->month, null)->format('F')) ({{ $income->year }})</td>
+              <td class="px-6 py-4">{{ \Carbon\Carbon::createFromFormat('m', $income->month)->locale('id')->isoFormat('MMMM') }} ({{ $income->year }})</td>
               <td class="px-6 py-4">@currency($income->total)</td>
               <td><a href="/income/{{ $income->month }}{{ $income->year }}" class="hover:underline hover:dark:text-white transition-all">Detail</a></td>
           </tr>
