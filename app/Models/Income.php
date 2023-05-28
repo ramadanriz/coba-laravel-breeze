@@ -13,7 +13,8 @@ class Income extends Model
 
     public function scopeFilter($query, array $filters) {
         $query->when($filters['search'] ?? false, function($query, $search) {
-            return $query->where('date', 'like', '%' . $search . '%')->orWhere('income', 'like', '%' . $search . '%');
+            $monthNumber = \Carbon\Carbon::parse($search)->format('m');
+            return $query->whereRaw("MONTH(date) = ?", [$monthNumber]);
         });
     }
 
