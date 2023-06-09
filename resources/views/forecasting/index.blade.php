@@ -1,67 +1,52 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 class="text-xl font-semibold leading-tight">
-              @if (isset($_POST['generate']))
-                {{ __('Peramalan') }} Menggunakan {{ $_POST['periode'] }} Periode
-              @endif
-            </h2>
-        </div>
+      <h2 class="text-xl font-semibold leading-tight capitalize">
+        {{ __('Forecasting') }}
+      </h2>
     </x-slot>
 
-    <x-button
-      x-on:click.prevent="$dispatch('open-modal', 'input-periode')"
-      class="fixed right-0 top-1/2 rounded-none rounded-s-sm"
-    >
-      <x-heroicon-o-cog-6-tooth class="w-5" />
-    </x-button>
+    <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800">
+      <div class="max-w-xl">
+        <section>
+          <header>
+              <h2 class="text-lg font-medium">
+                  {{ __('Masukkan Jangka Periode') }}
+              </h2>
+      
+              <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                  {{ __("Jumlah periode dalam moving average adalah jumlah data yang digunakan untuk menghitung rata-rata bergerak pada suatu periode waktu tertentu.") }}
+              </p>
+          </header>
+      
+          <form method="POST" action="/forecasting" class="mt-6 space-y-6">
+              @csrf      
+              <div class="space-y-2">       
+                <x-form.input
+                  id="periode"
+                  name="periode"
+                  type="number"
+                  class="block w-full"
+                  min="1"
+                  max="{{ $index-1 }}"
+                  value="{{ request('periode') }}"
+                  required
+                />
+              </div>
 
-    <x-modal
-        name="input-periode"
-        focusable
-    >
-      <form action="/forecasting" method="POST" class="p-6">
-          @csrf
-          <h2 class="text-lg font-medium">
-            {{ __('Masukkan jumlah periode') }}
-          </h2>
-
-          <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('Jumlah periode dalam moving average adalah jumlah data yang digunakan untuk menghitung rata-rata bergerak pada suatu periode waktu tertentu.') }}
-          </p>
-
-          <div class="mt-6 space-y-6">
-            <x-form.label
-              for="periode"
-              value="Jumlah periode"
-              class="sr-only"
-            />
-
-            <x-form.input
-              id="periode"
-              name="periode"
-              type="number"
-              class="block w-3/4"
-              min="1"
-              max="{{ $index-1 }}"
-              value="{{ request('periode') }}"
-              required
-            />
-          </div>
-
-          <div class="mt-6 flex justify-end">
-            <x-button
-              name="generate"
-              type="submit"
-            >
-                {{ __('Submit') }}
-            </x-button>
-        </div>
-      </form>
-    </x-modal>
+              <div class="flex items-center gap-4">
+                <x-button name="generate" type="submit">{{ __('Submit') }}</x-button>
+              </div>
+          </form>
+        </section>      
+      </div>
+    </div>  
 
     @if (isset($_POST['generate']))
-    <div class="container grid gap-7">
+    {{-- @dd(end($data2)) --}}
+    <div class="container grid gap-7 mt-8">
+      <h2 class="text-xl font-semibold leading-tight capitalize">
+        {{ __('Peramalan') }} Menggunakan {{ $_POST['periode'] }} Periode
+      </h2>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 w-full">
         <div class="flex items-center p-4 w-full bg-white dark:bg-dark-eval-1 rounded-lg overflow-hidden shadow hover:shadow-md">
@@ -139,36 +124,36 @@
       </div>
       </div>
     </div>
-    @endif
 
     <script>
-        const ctx = document.getElementById('myChart');
-      
-        new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: <?= json_encode($label); ?>,
-            datasets: [
-                {
-                    label: 'Pola Data Pendapatan',
-                    data: <?= json_encode($data1); ?>,
-                    borderWidth: 1
-                },
-                {
-                    label: 'Pola Data Ramalan',
-                    data: <?= json_encode($data2); ?>,
-                    borderWidth: 1
-                }
-            ]
-          },
-          options: {
-            scales: {
-              y: {
-                beginAtZero: true
+      const ctx = document.getElementById('myChart');
+    
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: <?= json_encode($labelLastTwelve = array_splice($label, -13)); ?>,
+          datasets: [
+              {
+                  label: 'Pola Data Pendapatan',
+                  data: <?= json_encode($data1Twelve); ?>,
+                  borderWidth: 1
+              },
+              {
+                  label: 'Pola Data Ramalan',
+                  data: <?= json_encode(array_splice($data2, -13)); ?>,
+                  borderWidth: 1
               }
+          ]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
             }
           }
-        });
+        }
+      });
     </script>
+    @endif
     
 </x-app-layout>

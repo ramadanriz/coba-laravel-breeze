@@ -24,18 +24,28 @@ class AdminForecastingController extends Controller
         array_push($label,$value[0]);
         array_push($data1,$value[1]);
       }
+
+      array_push($label, $nextPeriod);
     
       foreach ($hasil['MA'] as $value) {
         array_push($data2,$value);
       }
     }
 
+    
+    $data1LastTwelve = array_splice($data1, -12);
+    array_push($data1LastTwelve, null);
+    // $data2LastTwelve = array_splice($data2, -13);
+
     return view('forecasting.index', [
       "hasil" => isset($_POST['generate']) ? $hasil : '',
       "index" => $index,
       "label" => isset($_POST['generate']) ? $label : '',
+      // "labelTwelve" => isset($_POST['generate']) ? $labelLastTwelve : '',
       "data1" => isset($_POST['generate']) ? $data1 : '',
+      "data1Twelve" => isset($_POST['generate']) ? $data1LastTwelve : '',
       "data2" => isset($_POST['generate']) ? $data2 : '',
+      // "data2Twelve" => isset($_POST['generate']) ? $data2LastTwelve : '',
       "nextPeriod" => isset($_POST['generate']) ? $nextPeriod : ''
     ]);
   }

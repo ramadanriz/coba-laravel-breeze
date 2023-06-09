@@ -132,6 +132,17 @@
                     </x-form.input-with-icon-wrapper>
                 </div>
 
+                <!-- Choose Role -->
+                <div class="space-y-2">
+                    <x-form.label for="is_admin" :value="__('Role')" />
+                    <select name="is_admin" id="is_admin" class="block w-full py-2 border-gray-400 rounded-md focus:border-gray-400 focus:ring
+                    focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-white dark:border-gray-600 dark:bg-dark-eval-1
+                    dark:text-gray-300 dark:focus:ring-offset-dark-eval-1">
+                        <option value="1">Admin</option>
+                        <option value="0">User</option>
+                    </select>
+                </div>
+
                 <div>
                     <x-button class="justify-center w-full gap-2">
                         <x-heroicon-o-user-plus class="w-6 h-6" aria-hidden="true" />
