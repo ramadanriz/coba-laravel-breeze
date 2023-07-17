@@ -28,7 +28,6 @@
                             class="block w-full"
                             type="text"
                             name="input_type"
-                            :value="old('input_type')"
                             placeholder="{{ __('Email/Username') }}"
                             autofocus
                         />
