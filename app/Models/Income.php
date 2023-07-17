@@ -11,13 +11,6 @@ class Income extends Model
 
     protected $guarded = ['id'];
 
-    public function scopeFilter($query, array $filters) {
-        $query->when($filters['search'] ?? false, function($query, $search) {
-            $monthNumber = \Carbon\Carbon::parse($search)->format('m');
-            return $query->whereRaw("MONTH(date) = ?", [$monthNumber]);
-        });
-    }
-
     public function user() {
         return $this->belongsTo(User::class);
     }

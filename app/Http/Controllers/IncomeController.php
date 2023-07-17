@@ -28,7 +28,6 @@ class IncomeController extends Controller
         ->groupBy('month', 'year')
         ->orderByDesc('year')
         ->orderByDesc('month')
-        ->filter(request(['search']))
         ->paginate(5)
         ->withQueryString();
 

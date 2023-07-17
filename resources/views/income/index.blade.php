@@ -5,24 +5,6 @@
             <h2 class="text-xl font-semibold leading-tight">
                 {{ __('Data Pendapatan Bulanan') }}
             </h2>
-            <form action="/income">
-              <x-form.input-with-icon-wrapper>
-                <x-slot name="icon">
-                  <x-heroicon-o-magnifying-glass aria-hidden="true" class="w-5 h-5" />
-                </x-slot>
-
-                <x-form.input
-                    withicon
-                    id="search"
-                    class="block w-full"
-                    type="text"
-                    name="search"
-                    :value="request('search')"
-                    placeholder="{{ __('Search') }}"
-                    autofocus
-                />
-              </x-form.input-with-icon-wrapper>
-            </form>
           </div>
           <a href="/income/create" class="py-2 px-3 rounded-lg text-white bg-purple-500 shadow-lg hover:bg-purple-600">Add New Data</a>
         </div>
